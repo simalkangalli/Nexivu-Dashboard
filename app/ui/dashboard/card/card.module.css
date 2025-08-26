@@ -1,0 +1,68 @@
+.container {
+  background-color: var(--bgSoft);
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.container:hover{
+    background-color: var(--primaryHover);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(250, 230, 250, 0.4);
+    border-color: var(--borderHover);
+}
+
+.texts{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: color 0.3s ease;
+}
+
+.container:hover .texts{
+    color: white;
+}
+
+.number{
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.container:hover .number{
+    color: white;
+}
+
+.detail{
+    font-size: 12px;
+    font-weight: 300;
+    transition: color 0.3s ease;
+}
+
+.container:hover .detail{
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.positive{
+    color: var(--success);
+    transition: color 0.3s ease;
+}
+
+.container:hover .positive{
+    color: #d1fae5;
+}
+
+.negative{
+    color: var(--error);
+    transition: color 0.3s ease;
+}
+
+.container:hover .negative{
+    color: #fee2e2;
+}
+

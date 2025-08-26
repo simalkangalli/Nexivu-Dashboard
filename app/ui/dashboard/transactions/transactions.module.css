@@ -1,0 +1,97 @@
+.container{
+  background-color: var(--bgSoft);
+  padding: 20px;
+  border-radius:10px;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.container:hover{
+  background-color: var(--primaryHover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(250, 230, 250, 0.3);
+  border-color: var(--borderHover);
+}
+
+.title{
+  margin-bottom: 20px;
+  font-weight: 200;
+  color: var(--textSoft);
+  transition: color 0.3s ease;
+}
+
+.container:hover .title{
+  color: white;
+}
+
+.table{
+  width: 100%;
+}
+
+.table td{
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.table tr:hover td{
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.user{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.user:hover{
+  transform: scale(1.05);
+}
+
+.userImage{
+  object-fit: cover;
+  border-radius: 50%;
+  transition: box-shadow 0.3s ease;
+}
+
+.user:hover .userImage{
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+.status{
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 14px;
+  color: white;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.status:hover{
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.pending{
+  background-color: var(--warning);
+}
+
+.pending:hover{
+  background-color: var(--primaryHover);
+}
+
+.done{
+  background-color: var(--success);
+}
+
+.done:hover{
+  background-color: var(--primaryHover);
+}
+
+.cancelled{
+  background-color: var(--error);
+}
+
+.cancelled:hover{
+  background-color: var(--primaryHover);
+}

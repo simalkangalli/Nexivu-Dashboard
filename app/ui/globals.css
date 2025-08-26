@@ -1,0 +1,30 @@
+:root {
+  --bg: #301934;
+  --bgSoft: #4a2d4f;
+  --text: white;
+  --textSoft: #cbd5e1;
+  --primary: #3b82f6;
+  --primaryHover: transparent;
+  --accent: #60a5fa;
+  --accentHover: transparent;
+  --borderHover: #FAE6FA;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

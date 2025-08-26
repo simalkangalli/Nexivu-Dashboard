@@ -1,0 +1,82 @@
+.container {
+  padding: 20px;
+  border-radius: 10px;
+  background-color: var(--bgSoft);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.container:hover {
+  background-color: var(--primaryHover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(250, 230, 250, 0.3);
+  border-color: var(--borderHover);
+}
+
+.title {
+  color: var(--textSoft);
+  font-weight: bold;
+  text-transform: capitalize;
+  transition: color 0.3s ease;
+}
+
+.container:hover .title {
+  color: white;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--bg);
+  padding: 10px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.search:hover {
+  background-color: var(--primaryHover);
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(250, 230, 250, 0.3);
+  border-color: var(--borderHover);
+}
+
+.input {
+  background-color: transparent;
+  border: none;
+  color: var(--text);
+  transition: color 0.3s ease;
+}
+
+.search:hover .input {
+  color: white;
+}
+
+.search:hover .input::placeholder {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.icons{
+  display: flex;
+  gap: 20px;
+}
+
+.icons > * {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.icons > *:hover {
+  color: var(--primary);
+  transform: scale(1.2);
+}

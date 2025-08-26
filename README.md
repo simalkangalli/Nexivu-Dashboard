@@ -1,3 +1,9 @@
+# Nexus Dashboard
+
+A modern admin dashboard built with Next.js, featuring a clean and responsive design for managing users, products, and analytics.
+
+## About
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

@@ -1,0 +1,27 @@
+.container {
+  padding: 20px;
+  border-radius: 10px;
+  background-color: var(--bgSoft);
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  cursor: pointer;
+  height:450px;
+}
+
+.container:hover {
+  background-color: var(--primaryHover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(250, 230, 250, 0.3);
+  border-color: var(--borderHover);
+}
+
+.title {
+  font-weight: 500;
+  color: var(--textSoft);
+  margin-bottom: 20px;
+  transition: color 0.3s ease;
+}
+
+.container:hover .title {
+  color: white;
+}
