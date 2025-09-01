@@ -1,4 +1,4 @@
-# Nexus Dashboard
+# Nexivu Dashboard
 
 A modern admin dashboard built with Next.js, featuring a clean and responsive design for managing users, products, and analytics.
 

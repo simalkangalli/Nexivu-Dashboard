@@ -37,7 +37,7 @@
   }
   
   .user:hover .username{
-    color: var(--primary);
+    color: var(--borderHover);
   }
   
   .userTitle{
@@ -47,7 +47,7 @@
   }
   
   .user:hover .userTitle{
-    color: var(--accent);
+    color: var(--borderHover);
   }
   
   .list{

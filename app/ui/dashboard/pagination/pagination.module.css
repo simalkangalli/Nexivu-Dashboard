@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.button {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--bgSoft);
+    color: var(--text);
+    cursor: pointer;
+}
+.button:disabled {
+    cursor: not-allowed;
+    background-color: var(--bgSoft);
+    color: var(--text);
+}

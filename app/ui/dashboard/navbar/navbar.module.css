@@ -77,6 +77,6 @@
 }
 
 .icons > *:hover {
-  color: var(--primary);
+  color: var(--borderHover);
   transform: scale(1.2);
 }

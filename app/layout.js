@@ -4,7 +4,7 @@ import './ui/globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Nexus Dashboard',
+  title: 'Nexivu Dashboard',
   description: 'Modern Admin Dashboard',
 }
 

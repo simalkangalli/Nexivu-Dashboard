@@ -1,0 +1,79 @@
+.container {
+  padding: 20px;
+ 
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.addButton {
+  background-color: var(--textSoft);
+  color: purple;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.addButton:hover {
+  background-color: var(--borderHover);
+  color: var(--bg);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(250, 230, 250, 0.3);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--bgSoft);
+}
+
+.table th {
+  background-color: var(--bgSoft);
+  font-weight: bold;
+}
+
+.product {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.productImage {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.button {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: var(--textSoft);
+  color: purple;
+}
+
+.button:hover {
+  background-color: var(--borderHover);
+  color: var(--bg);
+  transform: translateY(-1px);
+}
