@@ -1,126 +1,64 @@
-"use server";
+import { Product, User } from "./models";
+import { connectToDB } from "./utils";
 
-// Mock user data for development
-const mockUsers = [
-  {
-    id: "1",
-    username: "simal simone",
-    email: "simal.simone@example.com",
-    phone: "+1 234 567 8900",
-    address: "123 Main St, City, State 12345",
-    img: "/noavatar.png",
-    isAdmin: true,
-    isActive: true,
-    createdAt: "2021-01-01"
-  },
-  {
-    id: "2", 
-    username: "john doe",
-    email: "john.doe@example.com",
-    phone: "+1 234 567 8901",
-    address: "456 Oak Ave, City, State 12345",
-    img: "/noavatar.png",
-    isAdmin: false,
-    isActive: true,
-    createdAt: "2022-06-15"
-  }
-];
+export const fetchUsers = async (q, page) => {
+  const regex = new RegExp(q, "i");
 
-// Mock product data for development
-const mockProducts = [
-  {
-    id: "test",
-    title: "Test Product",
-    desc: "Test description",
-    price: 100,
-    stock: 10,
-    color: "Blue",
-    size: "Medium",
-    cat: "software",
-    img: "/noproduct.jpg",
-    createdAt: "2024-01-01"
-  }
-];
+  const ITEM_PER_PAGE = 2;
 
-export async function fetchProduct(id) {
   try {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
-    // Find product by id
-    const product = mockProducts.find(product => product.id === id);
-    
-    if (!product) {
-      // Return default product if not found
-      return {
-        id: id,
-        title: "Unknown Product",
-        desc: "No description available",
-        price: 0,
-        stock: 0,
-        color: "Not specified",
-        size: "Not specified",
-        cat: "general",
-        img: "/noproduct.jpg",
-        createdAt: new Date().toISOString().split('T')[0]
-      };
-    }
-    
-    return product;
-  } catch (error) {
-    console.error("Error fetching product:", error);
-    throw new Error("Failed to fetch product");
+    await connectToDB();
+    const count = await User.find({ username: { $regex: regex } }).countDocuments();
+    const users = await User.find({ username: { $regex: regex } })
+      .limit(ITEM_PER_PAGE)
+      .skip(ITEM_PER_PAGE * (page - 1));
+    return { count, users };
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to fetch users!");
   }
-}
+};
 
-export async function fetchProducts() {
+export const fetchUser = async (id) => {
+  console.log(id);
   try {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 100));
-    return mockProducts;
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    throw new Error("Failed to fetch products");
-  }
-}
-
-export async function fetchUser(id) {
-  try {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
-    // Find user by id
-    const user = mockUsers.find(user => user.id === id);
-    
-    if (!user) {
-      // Return default user if not found
-      return {
-        id: id,
-        username: "Unknown User",
-        email: "user@example.com",
-        phone: "+1 000 000 0000",
-        address: "No address provided",
-        img: "/noavatar.png",
-        isAdmin: false,
-        isActive: true,
-        createdAt: new Date().toISOString().split('T')[0]
-      };
-    }
-    
+    await connectToDB();
+    const user = await User.findById(id);
     return user;
-  } catch (error) {
-    console.error("Error fetching user:", error);
-    throw new Error("Failed to fetch user");
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to fetch user!");
   }
-}
+};
 
-export async function fetchUsers() {
+export const fetchProducts = async (q, page) => {
+  console.log(q);
+  const regex = new RegExp(q, "i");
+
+  const ITEM_PER_PAGE = 2;
+
   try {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 100));
-    return mockUsers;
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    throw new Error("Failed to fetch users");
+    await connectToDB();
+    const count = await Product.find({ title: { $regex: regex } }).countDocuments();
+    const products = await Product.find({ title: { $regex: regex } })
+      .limit(ITEM_PER_PAGE)
+      .skip(ITEM_PER_PAGE * (page - 1));
+    return { count, products };
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to fetch products!");
   }
-}
+};
+
+export const fetchProduct = async (id) => {
+  try {
+    await connectToDB();
+    const product = await Product.findById(id);
+    return product;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to fetch product!");
+  }
+};
+
+

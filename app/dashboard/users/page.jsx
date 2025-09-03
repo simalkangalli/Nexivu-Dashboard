@@ -1,60 +1,77 @@
-import styles from "../../ui/dashboard/users/users.module.css";
-import Search from "../../ui/dashboard/search/search";
+import { deleteUser } from "@/app/lib/actions";
+import { fetchUsers } from "@/app/lib/data";
+import Pagination from "@/app/ui/dashboard/pagination/pagination";
+import Search from "@/app/ui/dashboard/search/search";
+import styles from "@/app/ui/dashboard/users/users.module.css";
+import Image from "next/image";
 import Link from "next/link";
-import Pagination from "../../ui/dashboard/pagination/pagination";
 
-const UsersPage = () => {
+const UsersPage = async ({ searchParams }) => {
+  const awaitedSearchParams = await searchParams;
+  const q = awaitedSearchParams?.q || "";
+  const page = awaitedSearchParams?.page || 1;
+  const { count, users } = await fetchUsers(q, page);
+
   return (
-    <div>
-      <div className={styles.container}>
-        <div className={styles.top}>
-          <Search placeholder="Search for a user..." />
-          <Link href="/dashboard/users/new">
-            <button className={styles.addButton}>Add New Employee</button>
-          </Link>
-        </div>
-        <table className={styles.table}>
-                      <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Created At</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-          <tbody>
-            <tr>
-              <td> <div className={styles.user}>
-                <img src="/noavatar.png" 
-                alt="" 
-                width={32} 
-                height={32} 
-                className={styles.userImage}/>
-                <span>simal simone</span>
-              </div>
-              </td>
-              <td>simal.simone@example.com</td>
-              <td>2021-01-01</td>
-              <td>admin</td>
-              <td>active</td>
-                             <td>
-                 <div className={styles.buttons}>
-                   <Link href={`/dashboard/users/1`}>
-                     <button className={styles.button}>View</button>
-                   </Link>
-                   <button className={styles.button}>Delete</button>
-                 </div>
-               </td>
-            </tr>
-          </tbody>
-        </table>
-        <Pagination />
+    <div className={styles.container}>
+      <div className={styles.top}>
+        <Search placeholder="Search for a user..." />
+        <Link href="/dashboard/users/add">
+          <button className={styles.addButton}>Add New</button>
+        </Link>
       </div>
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            <td>Name</td>
+            <td>Email</td>
+            <td>Created At</td>
+            <td>Role</td>
+            <td>Status</td>
+            <td>Action</td>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>
+                <div className={styles.user}>
+                  <Image
+                    src={user.img || "/noavatar.png"}
+                    alt=""
+                    width={40}
+                    height={40}
+                    className={styles.userImage}
+                  />
+                  {user.username}
+                </div>
+              </td>
+              <td>{user.email}</td>
+              <td>{user.createdAt?.toString().slice(4, 16)}</td>
+              <td>{user.isAdmin ? "Admin" : "Client"}</td>
+              <td>{user.isActive ? "active" : "passive"}</td>
+              <td>
+                <div className={styles.buttons}>
+                  <Link href={`/dashboard/users/${user.id}`}>
+                    <button className={`${styles.button} ${styles.view}`}>
+                      View
+                    </button>
+                  </Link>
+                  <form action={deleteUser}>
+                    <input type="hidden" name="id" value={(user.id)} />
+                    <button className={`${styles.button} ${styles.delete}`}>
+                      Delete
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <Pagination count={count} />
     </div>
-  )
-
+  );
 };
 
 export default UsersPage;

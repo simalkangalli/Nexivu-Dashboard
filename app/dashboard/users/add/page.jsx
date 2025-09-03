@@ -1,5 +1,5 @@
 import { addUser } from "@/app/lib/actions";
-import styles from "@/app/ui/dashboard/users/addUser/addUser.module.css";
+import styles from "@/app/ui/dashboard/users/addUsers/addUsers.module.css";
 
 const AddUserPage = () => {
   return (
@@ -13,7 +13,7 @@ const AddUserPage = () => {
           name="password"
           required
         />
-        <input type="phone" placeholder="phone" name="phone" />
+        <input type="tel" placeholder="phone" name="phone" />
         <select name="isAdmin" id="isAdmin">
           <option value={false}>
             Is Admin?

@@ -1,12 +1,22 @@
+import mongoose from "mongoose";
+
+let isConnected = false; // keep track globally
+
 export const connectToDB = async () => {
-    const connection = {}
-    try {
-        if(connection.isConnected) {
-            return;
-        }
-         const db = await mongoose.connect(process.env.MONGO_URI);
-         connection.isConnected = db.connections[0].readyState;
-      } catch (error) {
-        console.log(error);
-      }
+  if (isConnected) {
+    console.log("=> Using existing MongoDB connection");
+    return;
+  }
+
+  try {
+    const db = await mongoose.connect(process.env.MONGO_URI, {
+      dbName: "MyDashboardDB", 
+    });
+
+    isConnected = db.connections[0].readyState;
+    console.log(" MongoDB connected:", isConnected);
+  } catch (error) {
+    console.error(" MongoDB connection error:", error);
+    throw error;
+  }
 };

@@ -1,121 +1,184 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { Product, User } from "./models";
+import { connectToDB } from "./utils";
+import { redirect } from "next/navigation";
+import bcrypt from "bcrypt";
+import { signIn } from "../auth";
 
-// Add Product Action
-export const addProduct = async (formData) => {
-  const { title, cat, price, stock, color, desc } = Object.fromEntries(formData);
+export const addUser = async (formData) => {
+  const { username, email, password, phone, address, isAdmin, isActive } =
+    Object.fromEntries(formData);
 
   try {
-    // Here you would typically save to a database
-    // For now, we'll just log the data and redirect
-    console.log("Adding product:", {
-      title,
-      category: cat,
-      price: Number(price),
-      stock: Number(stock),
-      color,
-      description: desc,
-      createdAt: new Date(),
+    await connectToDB();
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword,
+      phone,
+      address,
+      isAdmin: isAdmin === "true",
+      isActive: isActive === "true",
     });
 
-    // Revalidate the products page to show updated data
-    revalidatePath("/dashboard/products");
+    await newUser.save();
+  } catch (err) {
+    console.log(err);
     
-    // Redirect back to products page
-    redirect("/dashboard/products");
-  } catch (error) {
-    console.error("Error adding product:", error);
-    throw new Error("Failed to add product");
+    // Handle specific MongoDB errors
+    if (err.code === 11000) {
+      if (err.keyValue.username) {
+        throw new Error("Username already exists! Please choose a different username.");
+      }
+      if (err.keyValue.email) {
+        throw new Error("Email already exists! Please use a different email address.");
+      }
+      throw new Error("User with this information already exists!");
+    }
+    
+    throw new Error("Failed to create user!");
   }
+
+  revalidatePath("/dashboard/users");
+  redirect("/dashboard/users");
 };
 
-// Update Product Action
-export const updateProduct = async (formData) => {
-  const { id, title, cat, price, stock, color, size, desc } = Object.fromEntries(formData);
+export const updateUser = async (formData) => {
+  const { id, username, email, password, phone, address, isAdmin, isActive } =
+    Object.fromEntries(formData);
 
   try {
-    // Here you would typically update in a database
-    // For now, we'll just log the data and redirect
-    console.log("Updating product:", {
-      id,
+    await connectToDB();
+
+    const updateFields = {
+      username,
+      email,
+      password,
+      phone,
+      address,
+      isAdmin,
+      isActive,
+    };
+
+    Object.keys(updateFields).forEach(
+      (key) =>
+        (updateFields[key] === "" || undefined) && delete updateFields[key]
+    );
+
+    await User.findByIdAndUpdate(id, updateFields);
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to update user!");
+  }
+
+  revalidatePath("/dashboard/users");
+  redirect("/dashboard/users");
+};
+
+export const addProduct = async (formData) => {
+  const { title, desc, price, stock, color, size } =
+    Object.fromEntries(formData);
+
+  try {
+    await connectToDB();
+
+    const newProduct = new Product({
       title,
-      category: cat,
-      price: Number(price),
-      stock: Number(stock),
+      desc,
+      price,
+      stock,
       color,
       size,
-      description: desc,
-      updatedAt: new Date(),
     });
 
-    // Revalidate the products page to show updated data
-    revalidatePath("/dashboard/products");
-    
-    // Redirect back to products page
-    redirect("/dashboard/products");
-  } catch (error) {
-    console.error("Error updating product:", error);
-    throw new Error("Failed to update product");
+    await newProduct.save();
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to create product!");
   }
+
+  revalidatePath("/dashboard/products");
+  redirect("/dashboard/products");
 };
 
-// Add User Action
-export const addUser = async (formData) => {
-  const { username, email, password, phone, isAdmin, isActive, address } = Object.fromEntries(formData);
+export const updateProduct = async (formData) => {
+  const { id, title, desc, price, stock, color, size } =
+    Object.fromEntries(formData);
 
   try {
-    // Here you would typically save to a database
-    // For now, we'll just log the data and redirect
-    console.log("Adding user:", {
-      username,
-      email,
-      password: "***", // Don't log actual password
-      phone,
-      isAdmin: isAdmin === "true",
-      isActive: isActive === "true",
-      address,
-      createdAt: new Date(),
-    });
+    await connectToDB();
 
-    // Revalidate the users page to show updated data
-    revalidatePath("/dashboard/users");
-    
-    // Redirect back to users page
-    redirect("/dashboard/users");
-  } catch (error) {
-    console.error("Error adding user:", error);
-    throw new Error("Failed to add user");
+    const updateFields = {
+      title,
+      desc,
+      price,
+      stock,
+      color,
+      size,
+    };
+
+    Object.keys(updateFields).forEach(
+      (key) =>
+        (updateFields[key] === "" || undefined) && delete updateFields[key]
+    );
+
+    await Product.findByIdAndUpdate(id, updateFields);
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to update product!");
   }
+
+  revalidatePath("/dashboard/products");
+  redirect("/dashboard/products");
 };
 
-// Update User Action
-export const updateUser = async (formData) => {
-  const { id, username, email, password, phone, isAdmin, isActive, address } = Object.fromEntries(formData);
+export const deleteUser = async (formData) => {
+  const { id } = Object.fromEntries(formData);
 
   try {
-    // Here you would typically update in a database
-    // For now, we'll just log the data and redirect
-    console.log("Updating user:", {
-      id,
-      username,
-      email,
-      password: password ? "***" : undefined, // Don't log actual password
-      phone,
-      isAdmin: isAdmin === "true",
-      isActive: isActive === "true",
-      address,
-      updatedAt: new Date(),
-    });
+    await connectToDB();
+    await User.findByIdAndDelete(id);
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to delete user!");
+  }
 
-    // Revalidate the users page to show updated data
-    revalidatePath("/dashboard/users");
-    
-    // Redirect back to users page
-    redirect("/dashboard/users");
-  } catch (error) {
-    console.error("Error updating user:", error);
-    throw new Error("Failed to update user");
+  revalidatePath("/dashboard/products");
+};
+
+export const deleteProduct = async (formData) => {
+  const { id } = Object.fromEntries(formData);
+
+  try {
+    await connectToDB();
+    await Product.findByIdAndDelete(id);
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to delete product!");
+  }
+
+  revalidatePath("/dashboard/products");
+};
+
+export const authenticate = async (formData) => {
+  const { username, password } = Object.fromEntries(formData);
+
+  try {
+    await signIn("credentials", { 
+      username, 
+      password,
+      redirectTo: "/dashboard"
+    });
+  } catch (err) {
+    if (err.message.includes("CredentialsSignin")) {
+      return "Wrong Credentials";
+    }
+    throw err;
   }
 };
